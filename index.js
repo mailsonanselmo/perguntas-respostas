@@ -38,8 +38,8 @@ app.get("/",(req, res) => {
     
 });
 
-app.get("/pergunta",(req, res) => {
-    res.render("pergunta");
+app.get("/perguntar",(req, res) => {
+    res.render("perguntar");
 });
 
 app.get("/pergunta/:id",(req, res) => {
@@ -51,10 +51,17 @@ app.get("/pergunta/:id",(req, res) => {
     }).then(pergunta => {
         if(pergunta != undefined){
 
-            res.render("pergunta",{
-                pergunta : pergunta
-            });
-
+            Resposta.findAll({
+                where: {perguntaId: pergunta.id},
+                order:[
+                    ['createdAt', 'DESC']
+                ]
+            }).then(respostas =>{
+                res.render("pergunta",{
+                    pergunta : pergunta,
+                    respostas : respostas
+                });
+            });            
         }else{
             res.redirect("/");
         }  
@@ -73,6 +80,21 @@ app.post("/enviarpergunta",(req, res) => {
         res.redirect("/");
     });
 });
+
+
+app.post("/responder",(req, res) => {
+
+    var corpo = req.body.corpo;
+    var perguntaId = req.body.pergunta;
+
+    Resposta.create({
+        corpo: corpo,
+        perguntaId: perguntaId
+    }).then(()=>{
+        res.redirect("/pergunta/"+perguntaId);
+    });
+});
+
 
 
 
