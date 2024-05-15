@@ -1,19 +1,19 @@
 const Sequelize = require("sequelize");
 const connection = require("./database");
 
-const Resposta = connection.define('Resposta',{
-    titulo:{
-        type: Sequelize.STRING,
+const Resposta = connection.define("respostas",{
+    corpo:{
+        type: Sequelize.TEXT,
         allowNull: false
     },
-    descricao:{
-        type: Sequelize.TEXT,
+    perguntaId:{
+        type: Sequelize.INTEGER,
         allowNull: false
     } 
 });
 
 Resposta.sync({force: false}).then(()=>{
-    console.log("Tabela resposta criada!");
+    console.log("Tabela respostas criada!");
 });
 
 module.exports = Resposta;

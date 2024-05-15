@@ -6,6 +6,7 @@ const Pergunta = require("./database/pergunta");
 const Resposta = require("./database/Resposta");
 const Agendamento = require("./database/Agendamento");
 
+
 connection
     .authenticate()
     .then(()=> {
@@ -32,13 +33,32 @@ app.get("/",(req, res) => {
         res.render("index",{
             perguntas: perguntas
         });
-    })
+    });
 
     
 });
 
-app.get("/perguntar",(req, res) => {
-    res.render("perguntar");
+app.get("/pergunta",(req, res) => {
+    res.render("pergunta");
+});
+
+app.get("/pergunta/:id",(req, res) => {
+
+    var id = req.params.id;
+
+    Pergunta.findOne({ 
+        where: {id: id}
+    }).then(pergunta => {
+        if(pergunta != undefined){
+
+            res.render("pergunta",{
+                pergunta : pergunta
+            });
+
+        }else{
+            res.redirect("/");
+        }  
+    }); 
 });
 
 app.post("/enviarpergunta",(req, res) => {
