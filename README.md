@@ -1,4 +1,4 @@
-# Prguntas&respostas
+# Perguntas&respostas
 Aplicação para perguntas e respostas
 
 
