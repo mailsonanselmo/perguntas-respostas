@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const connection = require("./database/database");
+const Pergunta = require("./database/pergunta");
+const Resposta = require("./database/Resposta");
+const Agendamento = require("./database/Agendamento");
 
 connection
     .authenticate()
@@ -28,13 +31,22 @@ app.get("/perguntar",(req, res) => {
     res.render("perguntar");
 });
 
+
 app.post("/enviarpergunta",(req, res) => {
 
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
 
-    res.send("enviando pergunta!" +titulo+" - "+descricao);
+    Pergunta.create({
+        titulo: titulo,
+        descricao: descricao
+    }).then(()=>{
+        res.redirect("/");
+    });
 });
+
+
+
       
 app.listen(8080, ()=>{
     console.log("App rodando!!!");
